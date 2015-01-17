@@ -44,6 +44,18 @@ public:
 		}
 		lastValue = value;
 	}
+    void set(bool value) {
+        if(value != curValue) {
+            if(value) {
+                triggered = true;
+            } else {
+                untriggered = true;
+            }
+        }
+        curValue = value;
+        lastValue = value;
+        lastTime = ofGetElapsedTimeMillis();
+    }
 	bool get() const {
 		return curValue;
 	}
