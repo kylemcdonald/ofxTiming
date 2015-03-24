@@ -17,7 +17,7 @@ public:
 	void setSmoothing(float smoothing) {
 		this->smoothing = smoothing;
 	}
-	float getFramerate() {
+	float getFrameRate() {
 		return averagePeriod == 0 ? 0 : 1 / averagePeriod;
 	}
 	void tick() {
