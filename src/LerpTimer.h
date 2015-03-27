@@ -18,9 +18,9 @@ public:
         targetValue = value;
     }
     void lerpToValue(float value) {
-        startTime = ofGetElapsedTimef();
         startValue = getValue();
         targetValue = value;
+        startTime = ofGetElapsedTimef();
     }
     float getProgress() const {
         float progress = (ofGetElapsedTimef() - startTime) / duration;
