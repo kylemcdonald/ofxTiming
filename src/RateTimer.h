@@ -8,7 +8,10 @@ protected:
 	bool secondTick;
 public:
 	RateTimer() :
-	smoothing(.9) {
+    lastTick(0),
+    averagePeriod(0),
+    smoothing(.9),
+    secondTick(false) {
 		reset();
 	}
 	void reset() {
@@ -17,9 +20,12 @@ public:
 	void setSmoothing(float smoothing) {
 		this->smoothing = smoothing;
 	}
-	float getFrameRate() {
+	float getFrameRate() const {
 		return averagePeriod == 0 ? 0 : 1 / averagePeriod;
 	}
+    float getPeriod() const {
+        return averagePeriod;
+    }
 	void tick() {
 		float curTick = ofGetElapsedTimef();
 		if(lastTick == 0) {
