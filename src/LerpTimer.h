@@ -30,6 +30,6 @@ public:
         return ofLerp(startValue, targetValue, getProgress());
     }
     bool getDone() const {
-        return (ofGetElapsedTimef() - startTime) > duration;
+        return getValue() == targetValue;
     }
 };
