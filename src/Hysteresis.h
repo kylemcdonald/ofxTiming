@@ -4,10 +4,15 @@
 
 class Hysteresis {
 protected:
-	unsigned long lastTime;
+	uint64_t lastTime;
 	bool lastValue, curValue;
-	unsigned long risingDelay, fallingDelay;
+	uint64_t risingDelay, fallingDelay;
 	bool triggered, untriggered;
+    
+    void resetTriggers() {
+        triggered = false;
+        untriggered = false;
+    }
 public:
 	Hysteresis()
 		:risingDelay(0)
@@ -26,14 +31,15 @@ public:
 	void setDelay(float delay) {
 		setDelay(delay, delay);
 	}
-	void update(bool value) {
-		unsigned long curTime = ofGetElapsedTimeMillis();
-		if(value != curValue) {
-			if(value != lastValue) {
+	bool update(bool value) {
+        resetTriggers();
+		uint64_t curTime = ofGetElapsedTimeMillis();
+        if(value != curValue) {
+            if(value != lastValue) {
 				lastTime = curTime;
 			}
-			unsigned long& delay = value ? risingDelay : fallingDelay;
-			if(curTime - lastTime > delay) {
+            uint64_t& delay = value ? risingDelay : fallingDelay;
+			if(curTime > delay + lastTime) {
 				curValue = value;
 				if(value) {
 					triggered = true;
@@ -43,8 +49,10 @@ public:
 			}
 		}
 		lastValue = value;
+        return get();
 	}
-    void set(bool value) {
+    bool set(bool value) {
+        resetTriggers();
         if(value != curValue) {
             if(value) {
                 triggered = true;
@@ -55,28 +63,21 @@ public:
         curValue = value;
         lastValue = value;
         lastTime = ofGetElapsedTimeMillis();
+        return get();
     }
 	bool get() const {
 		return curValue;
 	}
-	bool wasTriggered() {
-		if(triggered) {
-			triggered = false;
-			return true;
-		}
-		return false;
+	bool wasTriggered() const {
+        return triggered;
 	}
-	bool wasUntriggered() {
-		if(untriggered) {
-			untriggered = false;
-			return true;
-		}
-		return false;
+	bool wasUntriggered() const {
+        return untriggered;
 	}
 	float length() const {
 		return lengthMillis() / 1000.;
 	}
-	unsigned long lengthMillis() const {
+	uint64_t lengthMillis() const {
 		return ofGetElapsedTimeMillis() - lastTime;
 	}
 };

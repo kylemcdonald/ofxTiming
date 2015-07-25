@@ -26,6 +26,12 @@ public:
         float progress = (ofGetElapsedTimef() - startTime) / duration;
         return ofClamp(progress, 0, 1);
     }
+    float getStartValue() const {
+        return startValue;
+    }
+    float getTargetValue() const {
+        return targetValue;
+    }
     float getValue() const {
         return ofLerp(startValue, targetValue, getProgress());
     }
