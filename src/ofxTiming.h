@@ -5,3 +5,4 @@
 #include "Hysteresis.h"
 #include "RateTimer.h"
 #include "LerpTimer.h"
+#include "DurationTimer.h"
